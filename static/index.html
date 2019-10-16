@@ -1,0 +1,59 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title automatic tab switch </title>
+    <style type="text/css">
+        .tab {
+            margin: 20px auto;
+            width: 600px;
+        }
+
+        .tab ul{
+            position: relative;
+            top: 1px;
+        }
+
+        .tab ul li {
+            display: inline-block;
+            margin-right: 10px;
+            padding: 0 10px;
+            line-height: 35px;
+            cursor: pointer;
+            border: 1px solid #AAA;
+        }
+
+        .tab ul li.active {
+            color: red;
+            border-bottom-color: #FFF;
+        }
+
+        .tab div {
+            display: none;
+            height: 150px;
+            line-height: 150px;
+            text-align: center;
+            border: 1px solid #AAA;
+        }
+
+        .tab div.active {
+            display: block;
+        }
+    </style>
+
+</head>
+<body>
+<div class="tab" id="tabBox">
+    <ul class="header">
+        <li class="active">your store</li>
+        <li>deal store</li>
+        <li>Gift Card</li>
+    </ul>
+    <div class="active">your browsing history</div>
+    <div>outlets deal</div>
+    <div>By Occasion</div>
+</div>
+<script></script>
+</body>
+</html>
