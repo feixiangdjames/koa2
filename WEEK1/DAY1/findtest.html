@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        button {
+            width: 50px;
+            height: 50px;
+        }
+    </style>
+</head>
+<button onclick="myFn()">点我</button>
+<p id="demo"></p>
+<body>
+<script>
+/*    var ages = ['a','b','我','c','100','d','f'];
+    var value =null;
+    console.log(ages.findIndex(function getIndex(item,index){
+        console.log(item,index);
+        return item>40;
+    }));;
+
+    function myFn() {
+        document.getElementById('demo').innerHTML = value
+    }*/
+/*console.log([100, 102, '103', 104].filter(function (item, index) {
+    return item > 100;
+}));*/
+/*var numbers = [15.5, 2.3, 1.1, 4.7];
+
+function getSum(total, num) {
+    return Math.round(total) + Math.round(num);
+}
+
+console.log(numbers.reduce(getSum));*/
+/*let obj={name:'name',call:'call'};
+console.log(obj.call);*/
+var myMap = new Map();
+var keyString = "a string";
+
+myMap.set(keyString, "和键'a string'关联的值");
+
+myMap.get(keyString);    // "和键'a string'关联的值"
+myMap.get("a string");
+console.log(myMap);
+
+</script>
+</body>
+</html>

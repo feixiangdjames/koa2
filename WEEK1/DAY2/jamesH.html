@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+</head>
+<body>
+<div id="app">
+    <div class="container">
+        <table class="table table-bordered table-striped">
+            <caption style="caption-side:top" class="h1 text-danger">购物车</caption>
+            <tr>
+                <th>名称</th>
+                <th>价格</th>
+                <th>操作</th>
+            </tr>
+            <tr v-for="(item,index) in carList">
+                <td>{{item.name}}</td>
+                <td>{{item.price|toFixed|add$}}</td>
+                <td>
+                    <button class="btn btn-danger btn-sm" @click="remove(index)">删除</button>
+                </td>
+            </tr>
+            <tr class="text-center" v-show="carList.length">
+                <td colspan="3">
+                    <button class="btn btn-danger btn-sm" @click="removeAll(index)">ALL删除</button>
+                </td>
+            </tr>
+        </table>
+        <form class="form-horizontal" >
+            <div class="form-inline">
+                <label for="name" class="control-label">商品名称</label>
+                <div class="col-md-8">
+                    <input type="text" class="form-control" id="name" v-model="name">
+                </div>
+            </div>
+            <div class="form-inline" >
+                <label for="price" class="control-label">商品价格</label>
+                <div class="col-md-8">
+                    <input type="text" class="form-control" id="price" v-model="price">
+                </div>
+
+            </div>
+
+            <button class="btn btn-primary" @click.prevent="submit">submit</button>
+            <button class="btn btn-danger" type="reset">reset</button>
+        </form>
+    </div>
+</div>
+<script src="js/vue.js"></script>
+<script>
+    let vm=new Vue({
+        el:'#app',
+        data:{
+         carList:[{name:'衣服',price:'12.23'},{name:'裤子',price:124.343434}],
+            name:'',
+            price:''
+        },
+        filters:{
+            toFixed(target,val=2){
+                return Number(target).toFixed(val);
+            },
+            add$(target, val = '$') {
+                let reg = /^(¥|\$)/;
+                return reg.test(target.toString()) ? target : val + target;
+        }},
+        methods:{
+            remove(id){
+         this.carList.splice(id,1);
+            },
+            removeAll(){
+                this.carList=[];
+            },
+            submit(){
+                this.carList.push({name:this.name,price:this.price});
+                this.name=this.price=''
+            }
+        }
+    })
+</script>
+</body>
+</html>
