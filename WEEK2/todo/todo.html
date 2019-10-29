@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+    <style>
+        .sel {
+            color: #999;
+            text-decoration: line-through;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <div class="container">
+        <div class="col-md-6 col-lg-offset-3">
+            <div class="row">
+                <div class="panel panel-primary" style="margin-top:20px">
+                    <div class="panel-heading">
+                        <h2>主人你有{{sum}}件未完成的事情</h2>
+                        <!--2.处理的巧妙-->
+                        <input type="text" class="form-control" v-model="title" @keyup.13="addTodo">
+                    </div>
+                    <div class="panel-body">
+                        <ul class="list-group">
+                            <!--1. @dcclick 让cur=当前点击的item，v-show-->
+                            <!--3.获取焦点,创建一个指令 v-focus-->
+                            <!--4.失去焦点执行的方法是@blur-->
+                            <!--5.在新的页面遍历的不是todoList，而是根据tongdoList生成的新页面,增加筛选字段，filterList-->
+                            <li class="list-group-item" v-for="(item,index) in filterList" @dblclick="cur=item">
+                            <input type="text" v-show="item==cur" v-model="item.title" @keyup.13="cur=''" v-focus="cur==item"
+                                   @blur="cur=''">
+                            <span v-show="item!==cur">
+                                    <input type="checkbox" v-model="item.isSelected">
+                                <span style="vertical-align: top" :class="{sel:item.isSelected}">{{item.title}}</span>
+                                </span>
+                                <button class="btn-danger pull-right" @click.self="remove(index)">&bigodot;</button>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="panel-footer">
+                        <div class="nav nav-pills">
+                            <li role="presentation" :class="{active:hash=='all'}"><a href="#/all">全部</a></li>
+                            <li role="presentation":class="{active:hash=='finish'}"><a href="#/finish">已完成</a></li>
+                            <li role="presentation" :class="{active:hash=='unfinish'}"><a href="#/unfinish">未完成</a></li>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<script src="../node_modules/vue/dist/vue.js"></script>
+<script>
+    let vm = new Vue(
+        {
+            el: '#app',
+            data: {
+                todoList: [{title: '约会', isSelected: true}, {title: '学习Vue', isSelected: false}],
+              /*  filerList:[],*/// 6.filterList是根据hash的变化而变化。
+                title: "",
+                cur: "",
+                hash:""//7.监听hash的值
+            },
+            created() {
+            //created可以使用this下面的数据
+                this.hash=location.hash.split("/")[1]||"all";
+                window.addEventListener("hashchange",()=>{
+                    //8.绑定一个hashchange 事件
+                    //9.location.hash 用来获取hash
+                    this.hash=location.hash.split("/")[1];
+                });
+                /*11，给todoList 初始化,localStorage存储的是JSON字符串，用JSON.parse方法，讲JSON字符串转对象*/
+                if(localStorage.getItem("todo")){
+                    this.todoList=JSON.parse(localStorage.getItem("todo"));
+                };
+            },
+            directives: {
+                focus(el,bindings) {
+                    if(bindings.value){
+                        el.focus();//一个input元素，想要获取焦点，这是一个内置方法可以获取焦点
+                    }
+                }
+            },
+            computed: {
+                sum() {
+                    /*数组中isSelectcted = false ,用filter 过滤,返回一个数组*/
+                    return this.todoList.filter(item => !item.isSelected).length
+                },
+                filterList(){
+                    /*10.存储数据。记录在本地存储中（localStorage 本地存储），就可以防止关闭浏览器，数据不消失，但是要存储JSON字符串*/
+                    localStorage.setItem('todo',JSON.stringify(this.todoList));
+                    /*9.过滤出我们需要的数据*/
+                    if(this.hash=='all') return this.todoList;
+                    if(this.hash=='finish') return this.todoList.filter(item=>item.isSelected);
+                    if(this.hash=='unfinish') return this.todoList.filter(item=>!item.isSelected);
+                }
+            },
+            filters: {
+
+            },
+            watch:{
+
+            },
+            methods: {
+                addTodo() {
+                    //给数组this.todoList添加义项
+                    this.todoList.unshift({title: this.title, isSelected: false});
+                    this.title = '';
+                },
+                remove(index) {
+                    this.todoList.splice(index, 1);
+                }
+            }
+        }
+    )
+</script>
+</body>
+</html>
